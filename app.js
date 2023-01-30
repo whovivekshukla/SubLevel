@@ -8,6 +8,7 @@ const app = express();
 const connectDB = require("./db/connect");
 
 // routers
+const authRouter = require("./routes/authRoute"); 
 
 // middleware
 const notFoundMiddleware = require("./middleware/not-found");
@@ -17,6 +18,8 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.send("Welcome to Subevel");
 });
+
+app.use("/api/v1/auth", authRouter);
 
 app.use(notFoundMiddleware);
 
