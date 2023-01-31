@@ -5,7 +5,7 @@ const createJWT = async ({ payload }) => {
   return token;
 };
 
-const isTokenValid = (token) => {
+const isTokenValid = ({token}) => {
   jwt.verify(token, process.env.JWT_SECRET);
 };
 
@@ -16,7 +16,7 @@ const attachCookiesToResponse = ({ res, user, refreshToken }) => {
   const oneDay = 1000 * 60 * 60 * 24;
   const longerExpiry = 1000 * 60 * 60 * 24 * 30;
 
-  res.cookie("acessToken", accessTokenJWT, {
+  res.cookie("accessToken", accessTokenJWT, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     signed: true,

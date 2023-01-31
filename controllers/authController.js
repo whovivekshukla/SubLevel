@@ -4,10 +4,12 @@ const CustomAPIError = require("../errors");
 const crypto = require("crypto");
 const { StatusCodes } = require("http-status-codes");
 const {
+  createHash,
   attachCookiesToResponse,
   isTokenValid,
   createTokenUser,
   sendVerificationEmail,
+  sendResetPasswordEmail,
 } = require("../utils");
 
 const register = async (req, res) => {
@@ -34,7 +36,7 @@ const register = async (req, res) => {
     verificationToken,
   });
 
-  const origin = "http://localhost:3000";
+  const origin = process.env.ORIGIN;
 
   await sendVerificationEmail({
     name: user.name,
@@ -136,7 +138,64 @@ const logout = async (req, res) => {
     httpOnly: true,
     expires: new Date(Date.now()),
   });
-  res.status(StatusCodes.OK).json({ msg: "user logged out!"});
+  res.status(StatusCodes.OK).json({ msg: "user logged out!" });
+};
+
+const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+  if (!email) {
+    throw new CustomAPIError.BadRequestError("Please provide a valid email.");
+  }
+
+  const user = await User.findOne({ email });
+  if (user) {
+    const passwordToken = crypto.randomBytes(70).toString("hex");
+    const origin = process.env.ORIGIN;
+
+    await sendResetPasswordEmail({
+      name: user.name,
+      email: user.email,
+      token: passwordToken,
+      origin,
+    });
+
+    const tenMinutes = 1000 * 60 * 10;
+    const passwordTokenExpirationDate = new Date(Date.now() + tenMinutes);
+
+    user.passwordToken = createHash(passwordToken);
+    user.passwordTokenExpirationDate = passwordTokenExpirationDate;
+
+    await user.save();
+  }
+
+  res
+    .status(StatusCodes.OK)
+    .json({ msg: "Please check your email for verification" });
+};
+
+const verifyPassword = async (req, res) => {
+  const { token, email } = req.query;
+  const { password } = req.body;
+
+  if (!token || !email || !password) {
+    throw new CustomAPIError.BadRequestError("Please provide all values");
+  }
+
+  const user = await User.findOne({ email });
+
+  if (user) {
+    const currentDate = new Date();
+    if (
+      user.passwordToken === createHash(token) &&
+      user.passwordTokenExpirationDate > currentDate
+    ) {
+      user.password = password;
+      user.passwordToken = null;
+      user.passwordTokenExpirationDate = null;
+      await user.save();
+    }
+  }
+  res.status(StatusCodes.OK).json({ msg: "Your password has been updated" });
 };
 
 module.exports = {
@@ -144,4 +203,6 @@ module.exports = {
   login,
   logout,
   verifyEmail,
+  forgotPassword,
+  verifyPassword,
 };
