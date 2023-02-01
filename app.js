@@ -23,7 +23,7 @@ app.use(cookieParser(process.env.JWT_SECRET));
 
 app.get("/", (req, res) => {
   res.send("Welcome to Subevel");
-  console.log(req.signedCookies);
+  console.log(req.signedCookies.refreshToken);
 });
 
 app.use("/api/v1/auth", authRouter);

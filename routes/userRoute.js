@@ -5,6 +5,6 @@ const { authenticateUser } = require("../middleware/authentication");
 
 const { showMe } = require("../controllers/userController");
 
-router.get("/showMe", showMe, authenticateUser);
+router.get("/showMe", authenticateUser, showMe);
 
 module.exports = router;

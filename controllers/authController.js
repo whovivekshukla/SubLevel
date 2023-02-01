@@ -105,9 +105,7 @@ const login = async (req, res) => {
   if (existingToken) {
     const { isValid } = existingToken;
     if (!isValid) {
-      throw new CustomAPIError.UnauthenticatedError(
-        "Authentication Failed - Account not Verified"
-      );
+      throw new CustomAPIError.UnauthenticatedError("Invalid Credentials");
     }
 
     refreshToken = existingToken.refreshToken;
