@@ -1,8 +1,8 @@
 {
   "name": "sublevel",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "SubLevel is a Twitter Backend as an API",
+  "main": "app.js",
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js"

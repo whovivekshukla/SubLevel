@@ -4,7 +4,7 @@ const { StatusCodes } = require("http-status-codes");
 const { NotFoundError, UnauthenticatedError } = require("../errors");
 
 const showMe = async (req, res) => {
-  res.send(req.signedCookies.refreshToken);
+  res.send("Hi");
 };
 
 module.exports = {

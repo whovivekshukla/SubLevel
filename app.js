@@ -22,7 +22,7 @@ app.use(express.json());
 app.use(cookieParser(process.env.JWT_SECRET));
 
 app.get("/", (req, res) => {
-  res.send("Welcome to Subevel");
+  res.send("Welcome to SubLevel");
   console.log(req.signedCookies.refreshToken);
 });
 
