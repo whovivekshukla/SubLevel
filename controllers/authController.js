@@ -126,7 +126,7 @@ const login = async (req, res) => {
 };
 
 const logout = async (req, res) => {
-  await Token.findOneAndDelete({ user: req.userId });
+  await Token.findOneAndDelete({ user: req.user.userId });
 
   res.cookie("accessToken", "logout", {
     httpOnly: true,
@@ -191,9 +191,35 @@ const verifyPassword = async (req, res) => {
       user.passwordToken = null;
       user.passwordTokenExpirationDate = null;
       await user.save();
+    } else {
+      throw new CustomAPIError.BadRequestError("Password Change Invalid");
     }
   }
   res.status(StatusCodes.OK).json({ msg: "Your password has been updated" });
+};
+
+const deleteAccount = async (req, res) => {
+  const { sure } = req.body;
+  if (!sure || sure !== "yes") {
+    throw new CustomAPIError.BadRequestError(
+      "We won't delete your account. You are safe."
+    );
+  }
+
+  await Token.findOneAndDelete({ user: req.user.userId });
+
+  res.cookie("accessToken", "logout", {
+    httpOnly: true,
+    expires: new Date(Date.now()),
+  });
+  res.cookie("refreshToken", "logout", {
+    httpOnly: true,
+    expires: new Date(Date.now()),
+  });
+  await User.findOneAndDelete({ _id: req.user.userId });
+  res
+    .status(StatusCodes.OK)
+    .json({ msg: "We are sorry to see you go, your account has been deleted" });
 };
 
 module.exports = {
@@ -203,4 +229,5 @@ module.exports = {
   verifyEmail,
   forgotPassword,
   verifyPassword,
+  deleteAccount,
 };

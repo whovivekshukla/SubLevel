@@ -6,6 +6,7 @@ const app = express();
 
 // rest of the packages
 const cookieParser = require("cookie-parser");
+const morgan = require("morgan");
 
 // database
 const connectDB = require("./db/connect");
@@ -13,21 +14,23 @@ const connectDB = require("./db/connect");
 // routers
 const authRouter = require("./routes/authRoute");
 const userRouter = require("./routes/userRoute");
+const postRouter = require("./routes/postRoute");
 
 // middleware
 const notFoundMiddleware = require("./middleware/not-found");
 const errorHandlerMiddleware = require("./middleware/error-handler");
 
-app.use(express.json());
 app.use(cookieParser(process.env.JWT_SECRET));
-
-app.get("/", (req, res) => {
-  res.send("Welcome to SubLevel");
-  console.log(req.signedCookies.refreshToken);
-});
+app.use(express.json());
+app.use(morgan("tiny"));
 
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/user", userRouter);
+app.use("/api/v1/post", postRouter);
+
+app.get("/", (req, res) => {
+  res.send("Welcome to SubLevel");
+});
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
