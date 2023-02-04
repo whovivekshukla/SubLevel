@@ -15,6 +15,7 @@ const connectDB = require("./db/connect");
 const authRouter = require("./routes/authRoute");
 const userRouter = require("./routes/userRoute");
 const postRouter = require("./routes/postRoute");
+const likeRouter = require("./routes/likeRoute");
 
 // middleware
 const notFoundMiddleware = require("./middleware/not-found");
@@ -27,6 +28,7 @@ app.use(morgan("tiny"));
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/post", postRouter);
+app.use("/api/v1/like", likeRouter);
 
 app.get("/", (req, res) => {
   res.send("Welcome to SubLevel");

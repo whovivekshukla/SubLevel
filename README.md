@@ -1,6 +1,6 @@
 # SubLevel
 
-SubLevel is a Twitter Clone Backend API.
+SubLevel is a Social Media Clone Backend API.
 
 ## To run this project
 
