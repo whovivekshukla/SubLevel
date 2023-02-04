@@ -15,7 +15,7 @@ const { create, update } = require("../models/Post");
 router.get("/", authenticateUser, showAllPosts);
 router.post("/createPost", authenticateUser, createPost);
 router.get("/:id", authenticateUser, showPost);
-router.patch("/:id", authenticateUser, updatePost);
-router.delete("/:id", authenticateUser, deletePost);
+router.patch("/:postID", authenticateUser, updatePost);
+router.delete("/:postID", authenticateUser, deletePost);
 
 module.exports = router;
