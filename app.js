@@ -17,6 +17,7 @@ const userRouter = require("./routes/userRoute");
 const postRouter = require("./routes/postRoute");
 const likeRouter = require("./routes/likeRoute");
 const commentRouter = require("./routes/commentRoute");
+const followRouter = require("./routes/followRoute");
 
 // middleware
 const notFoundMiddleware = require("./middleware/not-found");
@@ -31,6 +32,7 @@ app.use("/api/v1/user", userRouter);
 app.use("/api/v1/post", postRouter);
 app.use("/api/v1/like", likeRouter);
 app.use("/api/v1/comment", commentRouter);
+app.use("/api/v1/follow", followRouter);
 
 app.get("/", (req, res) => {
   res.send("Welcome to SubLevel");
