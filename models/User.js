@@ -31,7 +31,7 @@ const UserSchema = mongoose.Schema({
   },
   description: {
     type: String,
-    minLength: 160,
+    maxLength: 160,
   },
   website: {
     type: String,
