@@ -14,7 +14,10 @@ const showFeed = async (req, res) => {
       "You don't follow any user, please follow people to see them in your feed"
     );
   }
-  const posts = await Post.find({ user: { $in: followeeIds } });
+  followeeIds.push(req.user.userId);
+  const posts = await Post.find({ user: { $in: followeeIds } }).sort({
+    createdAt: -1,
+  });
   res.status(StatusCodes.OK).json({ posts });
 };
 

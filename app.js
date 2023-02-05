@@ -53,9 +53,6 @@ app.use("/api/v1/comment", commentRouter);
 app.use("/api/v1/follow", followRouter);
 app.use("/api/v1/feed", feedRouter);
 
-app.get("/", (req, res) => {
-  res.send("Welcome to SubLevel");
-});
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
