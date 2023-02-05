@@ -5,7 +5,7 @@ SubLevel is a Social Media Clone Backend API.
 #### Features :
 
 - User Authentication (Register and Login)
-- Verify Email and Reset Email
+- Verify Email and Reset Password
 - Create Posts
 - Like Posts
 - Reply on Posts
