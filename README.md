@@ -2,6 +2,16 @@
 
 SubLevel is a Social Media Clone Backend API.
 
+#### Features :
+
+- User Authentication (Register and Login)
+- Verify Email and Reset Email
+- Create Posts
+- Like Posts
+- Reply on Posts
+- Follow Users 
+- A Feed
+
 ## To run this project
 
 1. Create an .env file and set the following variables: MONGO_URI, JWT_SECRET, JWT_LIFETIME with appropriate values.
