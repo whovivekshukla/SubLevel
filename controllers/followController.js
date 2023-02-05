@@ -32,7 +32,33 @@ const unfollowUser = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: "User Unfollowed" });
 };
 
+const myFollowing = async (req, res) => {
+  const following = await Follow.find({ user: req.user.userId });
+  const followeeIDs = following.map((followee) => followee.followee);
+  if (followeeIDs.length === 0) {
+    throw new CustomError.BadRequestError("You don't follow anyone");
+  }
+  const users = await User.find({ _id: followeeIDs }).select(
+    "name username description profileImag location website"
+  );
+  res.status(StatusCodes.OK).json({ users });
+};
+
+const myFollowers = async (req, res) => {
+  const followers = await Follow.find({ followee: req.user.userId });
+  const followerIDs = followers.map((followers) => followers.user);
+  if (followerIDs.length === 0) {
+    throw new CustomError.BadRequestError("You don't have any follower");
+  }
+  const users = await User.find({ _id: followerIDs }).select(
+    "name username description profileImag location website"
+  );
+  res.status(StatusCodes.OK).json({ users });
+};
+
 module.exports = {
   followUser,
   unfollowUser,
+  myFollowers,
+  myFollowing,
 };
