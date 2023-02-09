@@ -30,7 +30,14 @@ const unLike = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: "Like Deleted" });
 };
 
+const likeCount = async (req, res) => {
+  const { postID } = req.params;
+  const count = await Like.find({ post: postID }).count();
+  res.status(StatusCodes.OK).json({ count });
+};
+
 module.exports = {
   like,
   unLike,
+  likeCount,
 };

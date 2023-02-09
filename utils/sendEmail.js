@@ -1,12 +1,14 @@
 const nodemailer = require("nodemailer");
-const nodeMailerConfig = require("./nodeMailerConfig");
+const sgMail = require("@sendgrid/mail");
+// const emailjs = require('emailjs')
 
 const sendEmail = async ({ to, subject, html }) => {
-  let testAccount = await nodemailer.createTestAccount();
-  const transporter = nodemailer.createTransport(nodeMailerConfig);
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+  // let testAccount = await nodemailer.createTestAccount();
+  // const transporter = nodemailer.createTransport(sgMail);
 
-  return transporter.sendMail({
-    from: '"SubLevel" <sublevel@skiff.com>',
+  return sgMail.send({
+    from: "<sublevelmail@proton.me>",
     to,
     subject,
     html,

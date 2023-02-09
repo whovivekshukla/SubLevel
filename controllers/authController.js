@@ -1,5 +1,9 @@
 const User = require("../models/User");
 const Token = require("../models/Token");
+const Post = require("../models/Post");
+const Comment = require("../models/Comment");
+const Like = require("../models/Like");
+const Follow = require("../models/Follow");
 const CustomAPIError = require("../errors");
 const crypto = require("crypto");
 const { StatusCodes } = require("http-status-codes");
@@ -105,6 +109,7 @@ const login = async (req, res) => {
   if (existingToken) {
     const { isValid } = existingToken;
     if (!isValid) {
+      await Token.findOneAndDelete({ user: req.user.userId });
       throw new CustomAPIError.UnauthenticatedError("Invalid Credentials");
     }
 
@@ -206,6 +211,10 @@ const deleteAccount = async (req, res) => {
     );
   }
 
+  await Post.deleteMany({ user: req.user.userId });
+  await Comment.deleteMany({ user: req.user.userId });
+  await Like.deleteMany({ user: req.user.userId });
+  await Follow.deleteMany({ user: req.user.userId });
   await Token.findOneAndDelete({ user: req.user.userId });
 
   res.cookie("accessToken", "logout", {

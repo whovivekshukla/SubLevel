@@ -5,6 +5,16 @@ const { StatusCodes } = require("http-status-codes");
 
 const followUser = async (req, res) => {
   const { userID } = req.params;
+  if (userID == req.user.userId) {
+    throw new CustomError.BadRequestError("You cannot follow yourself");
+  }
+  const checkUser = await User.findOne({ _id: userID });
+  if (!checkUser) {
+    throw new CustomError.NotFoundError(
+      "The user you are trying to follow does not exist"
+    );
+  }
+
   const checkFollow = await Follow.findOne({
     user: req.user.userId,
     followee: userID,
