@@ -14,10 +14,12 @@ const showMe = async (req, res) => {
 const userProfile = async (req, res) => {
   const { id } = req.params;
   const user = await User.findOne({ username: id }).select(
-    "name username description location website profileImage"
+    "name username description location website profileImage isVerified"
   );
-  if (!user) {
-    throw new CustomError.BadRequestError(`No User Found with username: @${id}`);
+  if (!user || !user.isVerified) {
+    throw new CustomError.BadRequestError(
+      `No User Found with username: @${id}`
+    );
   }
   res.status(StatusCodes.OK).json({ user });
 };

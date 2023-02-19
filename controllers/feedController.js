@@ -9,11 +9,11 @@ const showFeed = async (req, res) => {
   const myFollowees = await Follow.find({ user: req.user.userId });
 
   const followeeIds = myFollowees.map((followee) => followee.followee);
-  if (followeeIds.length === 0) {
-    throw new CustomError.NotFoundError(
-      "You don't follow any user, please follow people to see them in your feed"
-    );
-  }
+  // if (followeeIds.length === 0) {
+  //   throw new CustomError.NotFoundError(
+  //     "You don't follow any user, please follow people to see them in your feed"
+  //   );
+  // }
   followeeIds.push(req.user.userId);
   const posts = await Post.find({ user: { $in: followeeIds } }).sort({
     createdAt: -1,

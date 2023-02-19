@@ -4,6 +4,12 @@ require("express-async-errors");
 const express = require("express");
 const app = express();
 
+app.use(function (req, res, next) {
+  res.setHeader("Access-Control-Allow-Origin", "http://127.0.0.1:5500/");
+  res.setHeader("My-Custom-Header", "custom header value");
+  next();
+});
+
 // rest of the packages
 const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
