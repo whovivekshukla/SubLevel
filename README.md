@@ -25,3 +25,4 @@ SubLevel is a Social Media Clone Backend API.
 5. Run the following commands in the terminal:
    - `npm install`
    - `npm start`
+6. Then go to `http://localhost:3000`
