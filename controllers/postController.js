@@ -28,6 +28,12 @@ const updatePost = async (req, res) => {
     );
   }
   const post = await Post.findOne({ _id: postID });
+  console.log(post.user, req.user.userId);
+  if (post.user != req.user.userId) {
+    throw new CustomError.BadRequestError(
+      "This is not your post, you cannot edit it."
+    );
+  }
   post.post = postData;
   await post.save();
   res.status(StatusCodes.OK).json({ post });
